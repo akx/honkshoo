@@ -44,3 +44,15 @@ def visualize(
         plt.savefig(output)
     else:
         plt.show()
+
+
+@honkshoo.command("mimimi", hidden=True)
+def mimimi() -> None:
+    tag = click.style("#sleeps with a feather over my mouth that goes up and down as i breathe", dim=True)
+    print(
+        f"""
+<@moisturiser> me sleeping: honk shoo honk shoo honk shoo
+<@eliteknightcats> me sleeping: snrrrk mi mi mi mi snrrrk mi mi mi mi
+                   {tag}
+""".strip()
+    )
