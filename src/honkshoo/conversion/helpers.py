@@ -62,3 +62,14 @@ def open_edf(edf_path):
         msg = f"Error reading {edf_path}: {e}"
         raise EDFReadError(msg) from e
     return edf
+
+
+def batched(gen, batch_size: int):
+    batch = []
+    for item in gen:
+        batch.append(item)
+        if len(batch) >= batch_size:
+            yield batch
+            batch = []
+    if batch:
+        yield batch

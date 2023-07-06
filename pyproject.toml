@@ -27,6 +27,9 @@ dependencies = [
   "mne~=1.4.2",
 ]
 
+[project.optional-dependencies]
+influxdb = ["httpx"]
+
 [project.urls]
 Documentation = "https://github.com/akx/honkshoo#readme"
 Issues = "https://github.com/akx/honkshoo/issues"

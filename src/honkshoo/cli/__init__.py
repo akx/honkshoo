@@ -25,8 +25,32 @@ def convert_to_sqlite(
     output_database: str,
 ) -> None:
     from honkshoo.conversion.sqlite3 import SQLiteConverter
+
     with sqlite3.connect(output_database) as db:
         SQLiteConverter(db).read_edfs(edfs)
+
+
+@honkshoo.command("ingest-to-influxdb", help="Ingest EDF files to InfluxDB database")
+@click.argument("edfs", nargs=-1, type=click.Path(exists=True, file_okay=True, path_type=Path))
+@click.option("--influxdb-url", envvar="INFLUXDB_URL", default="http://localhost:8086/")
+@click.option("--influxdb-org", envvar="INFLUXDB_ORG", default="org")
+@click.option("--influxdb-bucket", envvar="INFLUXDB_BUCKET", default="bucket")
+@click.option("--influxdb-token", envvar="INFLUXDB_TOKEN", required=True)
+def ingest_to_influxdb(
+    edfs: tuple[Path],
+    influxdb_url: str,
+    influxdb_org: str,
+    influxdb_bucket: str,
+    influxdb_token: str,
+) -> None:
+    from honkshoo.conversion.influxdb import InfluxDBConverter
+
+    InfluxDBConverter(
+        url=influxdb_url,
+        bucket=influxdb_bucket,
+        org=influxdb_org,
+        token=influxdb_token,
+    ).read_edfs(edfs)
 
 
 @honkshoo.command("visualize-sqlite", help="Visualize channels from SQLite database")
