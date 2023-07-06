@@ -7,7 +7,6 @@ import click
 import matplotlib.pyplot as plt
 
 from honkshoo.__about__ import __version__
-from honkshoo.conversion.sqlite3 import SQLiteConverter
 
 
 @click.group()
@@ -16,22 +15,23 @@ def honkshoo():
     pass
 
 
-@honkshoo.command("convert", help="Convert EDF files to SQLite database")
+@honkshoo.command("convert-to-sqlite", help="Convert EDF files to SQLite database")
 @click.argument("edfs", nargs=-1, type=click.Path(exists=True, file_okay=True, path_type=Path))
 @click.option("--output-database", "-o", default=":memory:")
-def convert(
+def convert_to_sqlite(
     edfs: tuple[Path],
     output_database: str,
 ) -> None:
+    from honkshoo.conversion.sqlite3 import SQLiteConverter
     with sqlite3.connect(output_database) as db:
         SQLiteConverter(db).read_edfs(edfs)
 
 
-@honkshoo.command("visualize", help="Visualize channels from SQLite database")
+@honkshoo.command("visualize-sqlite", help="Visualize channels from SQLite database")
 @click.argument("database", nargs=1, type=click.Path(exists=True, file_okay=True, path_type=Path))
 @click.option("--channels", "-c", multiple=True)
 @click.option("--output", "-o", help="Output image file")
-def visualize(
+def visualize_sqlite(
     database: Path,
     channels: tuple[str] | None,
     output: str | None = None,

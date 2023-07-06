@@ -21,6 +21,6 @@ pip install -e .
 Once you have a directory (structure) with EDF files, you can run
 
 ```
-honkshoo convert data/DATALOG/20230703/*.edf -o ./20230703.sqlite3
-honkshoo visualize ./20230703.sqlite3
+honkshoo convert-to-sqlite data/DATALOG/20230703/*.edf -o ./20230703.sqlite3
+honkshoo visualize-sqlite ./20230703.sqlite3
 ```
