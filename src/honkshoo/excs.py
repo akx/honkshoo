@@ -1,0 +1,2 @@
+class EDFReadError(Exception):
+    pass

@@ -7,6 +7,7 @@ import click
 import matplotlib.pyplot as plt
 
 from honkshoo.__about__ import __version__
+from honkshoo.conversion.sqlite3 import SQLiteConverter
 
 
 @click.group()
@@ -22,9 +23,8 @@ def convert(
     edfs: tuple[Path],
     output_database: str,
 ) -> None:
-    from honkshoo.conversion import convert_edfs_to_sqlite
-
-    convert_edfs_to_sqlite(edfs, sqlite3.connect(output_database))
+    with sqlite3.connect(output_database) as db:
+        SQLiteConverter(db).read_edfs(edfs)
 
 
 @honkshoo.command("visualize", help="Visualize channels from SQLite database")
@@ -38,8 +38,8 @@ def visualize(
 ) -> None:
     from honkshoo.visualization import plot_channels
 
-    db = sqlite3.connect(database)
-    plot_channels(db, channels=(channels or None))
+    with sqlite3.connect(database) as db:
+        plot_channels(db, channels=(channels or None))
     if output:
         plt.savefig(output)
     else:
@@ -54,5 +54,5 @@ def mimimi() -> None:
 <@moisturiser> me sleeping: honk shoo honk shoo honk shoo
 <@eliteknightcats> me sleeping: snrrrk mi mi mi mi snrrrk mi mi mi mi
                    {tag}
-""".strip()
+""".strip(),
     )
