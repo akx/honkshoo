@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import sqlite3
 from pathlib import Path
 
@@ -11,8 +12,9 @@ from honkshoo.__about__ import __version__
 
 @click.group()
 @click.version_option(version=__version__, prog_name="honkshoo")
-def honkshoo():
-    pass
+@click.option("--log-level", "-l", default="INFO", type=click.Choice(("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")))
+def honkshoo(log_level):
+    logging.basicConfig(level=log_level)
 
 
 @honkshoo.command("convert-to-sqlite", help="Convert EDF files to SQLite database")
